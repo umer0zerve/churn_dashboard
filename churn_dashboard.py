@@ -77,9 +77,9 @@ if authentication_status:
     # Display the filtered data
     with col1:
         st.header('Filtered Data')
-        st.dataframe(filtered_data)
-        st.dataframe(df.style.apply(helper.highlight_survived, axis=1))
-        st.dataframe(df.style.applymap(helper.color_survived, subset=['pause_probability']))
+        #st.dataframe(filtered_data)
+        st.dataframe(filtered_data.style.applymap(helper.color_pause, subset=['pause_probability']))
+        # st.dataframe(helper.filter_dataframe(filtered_data))
 
 
     with col2:
@@ -106,9 +106,12 @@ if authentication_status:
     if actionbutton1.button("Download as CSV"):
         st.dataframe.download(filtered_data)
 
-    # Send Email 
+    # Send Email
+    email = st.text_input("Email Id", "Type your email id here")
     if actionbutton2.button('Email CSV'):
-        email = helper.send_email(st.text_input('Write your email id'), 'Predictions', df)
+        #email = st.text_input('Enter your email')
+        if '@' in email:
+            helper.send_email(email,'predictions',filtered_data)
 
 
 
